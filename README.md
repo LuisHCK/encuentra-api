@@ -21,4 +21,10 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+
+## Setting Up vscode
+`gem install rubocop rufo rcodetools ruby-debug-ide debase rubocop`
+
+Install extension:
+- Ruby rebornix.ruby
+- Rufo (Ruby formatter)
