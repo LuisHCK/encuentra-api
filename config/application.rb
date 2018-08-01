@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -32,11 +32,15 @@ module Api
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Allow request from any origin
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-      origins '*'
-      resource '*', :headers => :any, :methods => [:get, :post, :options, :patch, :update]
+        origins "*"
+        resource "*", :headers => :any, :methods => [:get, :post, :options, :patch, :update]
       end
     end
+
+    # Prevent ddos and abuse of requests
+    config.middleware.use Rack::Attack
   end
 end
