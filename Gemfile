@@ -59,3 +59,9 @@ gem 'httparty'
 
 # Image upload management
 gem 'carrierwave'
+
+# Autorization
+gem 'cancancan', '~> 2.0'
+
+# Roles
+gem "rolify"

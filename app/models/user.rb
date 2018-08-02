@@ -1,5 +1,8 @@
 class User < ApplicationRecord
+  rolify
+
   # Necessary to authenticate
+
   has_secure_password
 
   mount_uploader :avatar, AvatarUploader
