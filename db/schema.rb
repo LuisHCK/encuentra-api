@@ -10,17 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_02_043941) do
+ActiveRecord::Schema.define(version: 2018_08_02_053303) do
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "iso", null: false
+    t.integer "country_id"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_cities_on_country_id"
+    t.index ["name"], name: "index_cities_on_name"
+  end
 
   create_table "countries", force: :cascade do |t|
-    t.string "iso"
-    t.string "name"
-    t.string "iso3"
+    t.string "iso", null: false
+    t.string "name", null: false
+    t.string "iso3", null: false
     t.integer "numcode"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_countries_on_name"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -57,6 +70,17 @@ ActiveRecord::Schema.define(version: 2018_08_02_043941) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "zones", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "city_id"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id"], name: "index_zones_on_city_id"
+    t.index ["name"], name: "index_zones_on_name"
   end
 
 end
