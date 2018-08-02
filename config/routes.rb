@@ -4,4 +4,8 @@ Rails.application.routes.draw do
   namespace :auth do
     post "facebook_auth", to: "facebook#authenticate"
   end
+
+  # Countries Actions
+  get '/countries' => 'countries#index'
+
 end
