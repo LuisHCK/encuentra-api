@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_044846) do
+ActiveRecord::Schema.define(version: 2018_08_02_012505) do
 
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
-    t.string "dni", null: false
+    t.string "dni"
     t.string "password_digest"
     t.string "role", default: "user", null: false
     t.datetime "last_login"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 2018_08_01_044846) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "lastname"
+    t.string "fb_uid"
+    t.string "gl_uid"
+    t.string "tw_uid"
+    t.string "avatar"
     t.index ["email"], name: "index_users_on_email"
   end
 

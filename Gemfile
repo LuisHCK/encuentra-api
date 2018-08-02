@@ -21,6 +21,7 @@ gem 'fast_jsonapi'
 
 # Json web token AUTH
 gem 'knock'
+
 gem 'jwt'
 
 # Use ActiveStorage variant
@@ -52,3 +53,9 @@ gem 'rack-attack'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Make HTTP Calls
+gem 'httparty'
+
+# Image upload management
+gem 'carrierwave'
