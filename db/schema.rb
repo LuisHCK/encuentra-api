@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_02_035905) do
+ActiveRecord::Schema.define(version: 2018_08_02_043941) do
+
+  create_table "countries", force: :cascade do |t|
+    t.string "iso"
+    t.string "name"
+    t.string "iso3"
+    t.integer "numcode"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
