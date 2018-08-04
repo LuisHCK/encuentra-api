@@ -1,6 +1,7 @@
 class CountriesSerializer
   include FastJsonapi::ObjectSerializer
   set_type :country
+  set_id :id
 
   attributes :iso, :name, :numcode, :latitude, :longitude
 

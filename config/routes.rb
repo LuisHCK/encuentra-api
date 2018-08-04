@@ -7,5 +7,6 @@ Rails.application.routes.draw do
 
   # Countries Actions
   get '/countries' => 'countries#index'
+  get '/countries/:id' => 'countries#show'
 
 end
