@@ -1,29 +1,28 @@
 class UsersController < ApplicationController
   # Use Knock to make sure the current_user is authenticated before completing request.
-  before_action :authenticate_user,  only: [:index, :current, :update]
-  before_action :authorize,          only: [:update]
+  before_action :authenticate_user, only: [:index, :current, :update]
+  before_action :authorize, only: [:update]
 
   # Should work if the current_user is authenticated.
-   def index
-    render json: {status: 200, msg: 'Logged-in'}
+  def index
+    render json: {status: 200, msg: "Logged-in"}
   end
-  
+
   # Method to create a new user using the safe params we setup.
   def create
     user = User.new(user_params)
     if user.save
-      render json: {status: 200, msg: 'User was created.'}
+      render json: {status: 200, msg: "User was created."}
     else
       render json: {status: 400, msg: user.errors}
     end
-
   end
 
   # Method to update a specific user. User will need to be authorized.
   def update
     user = User.find(params[:id])
     if user.update(user_params)
-      render json: { status: 200, msg: 'User details have been updated.' }
+      render json: {status: 200, msg: "User details have been updated."}
     end
   end
 
@@ -31,10 +30,9 @@ class UsersController < ApplicationController
   def destroy
     user = User.find(params[:id])
     if user.destroy
-      render json: { status: 200, msg: 'User has been deleted.' }
+      render json: {status: 200, msg: "User has been deleted."}
     end
   end
-
 
   # Call this method to check if the user is logged-in.
   # If the user is logged-in we will return the user's information.
@@ -43,19 +41,17 @@ class UsersController < ApplicationController
     json_string = UserSerializer.new(current_user).serialized_json
     render json: json_string
   end
-  
+
   private
-    
+
   # Setting up strict parameters for when we add account creation.
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation)
   end
 
-
-  # Adding a method to check if current_user can update itself. 
+  # Adding a method to check if current_user can update itself.
   # This uses our UserModel method.
   def authorize
     return_unauthorized unless current_user && current_user.can_update_user?(params[:id])
   end
-
 end

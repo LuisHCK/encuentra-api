@@ -2,8 +2,10 @@ class User < ApplicationRecord
   rolify
 
   # Necessary to authenticate
-
   has_secure_password
+
+  # Relationships
+  has_many :rooms
 
   # Now Using activestorage instead CarrierWave
   # mount_uploader :avatar, AvatarUploader
