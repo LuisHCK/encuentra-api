@@ -41,7 +41,20 @@ class RoomsController < ApplicationController
 
   # Set state
   def set_state
-    if params.state
+    if state_is_valid?
+      @room.send params[:state]
+      render json: @room
+    else
+      errors = [
+        {
+          "status": "422",
+          "title":  "Invalid State",
+          "detail": "The state is not valid."
+        }
+       ]
+      
+      render json: errors, status: :unprocessable_entity
+    end
   end
 
   private
@@ -54,5 +67,11 @@ class RoomsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def room_params
     params.require(:room).permit(:title, :description, :price, :lat, :lng, :user_id, :zone_id)
+  end
+    
+  # Filter state 
+  def state_is_valid?
+    valid_states = %w(to_published to_rented to_draft)
+    valid_states.include? params[:state]
   end
 end
