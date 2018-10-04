@@ -71,3 +71,6 @@ gem 'cancancan', '~> 2.0'
 
 # Roles
 gem "rolify"
+
+# State machine
+gem 'aasm'

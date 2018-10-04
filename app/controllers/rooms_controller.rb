@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
-  before_action :authenticate_user, only: [:create, :destroy]
-  before_action :set_room, only: [:update, :destroy]
+  before_action :authenticate_user, except: [:create]
+  before_action :set_room, only: [:update, :destroy, :set_state]
 
   # GET /rooms
   def index
@@ -37,6 +37,11 @@ class RoomsController < ApplicationController
   # DELETE /rooms/1
   def destroy
     @room.destroy
+  end
+
+  # Set state
+  def set_state
+    if params.state
   end
 
   private

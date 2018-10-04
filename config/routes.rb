@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  resources :rooms
+  resources :rooms do
+    patch "set_state", "rooms#set_state"
+  end
+
   resources :users
-  post "auth" => "user_token#create"
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
   namespace :auth do
+    post "basic" => "user_token#create"
     post "facebook_auth", to: "facebook#authenticate"
   end
 
