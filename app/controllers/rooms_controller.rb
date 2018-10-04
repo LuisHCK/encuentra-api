@@ -19,7 +19,7 @@ class RoomsController < ApplicationController
     @room = current_user.rooms.new(room_params)
 
     if @room.save
-      render json: @room, status: :created, location: @room
+      render json: @room, status: :created
     else
       render json: @room.errors, status: :unprocessable_entity
     end
@@ -48,6 +48,6 @@ class RoomsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def room_params
-    params.require(:room).permit(:title, :description, :price, :lat, :lng, :state, :user_id, :zone_id)
+    params.require(:room).permit(:title, :description, :price, :lat, :lng, :user_id, :zone_id)
   end
 end

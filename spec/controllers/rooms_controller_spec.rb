@@ -9,9 +9,9 @@ RSpec.describe RoomsController, type: :controller do
 
   let(:zone) { create(:zone, city: city) }
 
-  let(:valid_attributes) { FactoryBot.attributes_for(:room, user: user, zone: zone) }
+  let(:valid_attributes) { FactoryBot.attributes_for(:room, user_id: user.id, zone_id: zone.id) }
 
-  let(:invalid_attributes) { FactoryBot.attributes_for(:room) }
+  let(:invalid_attributes) { FactoryBot.attributes_for(:room, title: nil, description: nil) }
 
   describe "GET #index" do
     it "returns a success response" do
@@ -45,7 +45,6 @@ RSpec.describe RoomsController, type: :controller do
         post :create, params: {room: valid_attributes}
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq("application/json")
-        expect(response.location).to eq(room_url(Room.last))
       end
     end
 
@@ -62,7 +61,7 @@ RSpec.describe RoomsController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        FactoryBot.attributes_for(:room, title: "newtitle")
       }
 
       it "updates the requested room" do
@@ -70,7 +69,7 @@ RSpec.describe RoomsController, type: :controller do
         api_auth(request, user)
         put :update, params: {id: room.to_param, room: new_attributes}
         room.reload
-        skip("Add assertions for updated state")
+        expect(room.title).to eq("newtitle")
       end
 
       it "renders a JSON response with the room" do

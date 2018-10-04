@@ -1,28 +1,36 @@
 class UsersController < ApplicationController
   # Use Knock to make sure the current_user is authenticated before completing request.
-  before_action :authenticate_user, only: [:index, :current, :update]
+  before_action :authenticate_user, only: [:index, :current, :update, :show]
+  before_action :set_user, only: [:show, :update]
   before_action :authorize, only: [:update]
 
   # Should work if the current_user is authenticated.
   def index
-    render json: {status: 200, msg: "Logged-in"}
+    render json: serialize!(User.all, {}, "User")
+  end
+
+  def show
+    render json: serialize!(@user)
   end
 
   # Method to create a new user using the safe params we setup.
   def create
     user = User.new(user_params)
     if user.save
-      render json: {status: 200, msg: "User was created."}
+      # Append JWT token to response headers
+      response.set_header("JWT", client_token(user).token)
+      render json: serialize!(user), status: :created
     else
-      render json: {status: 400, msg: user.errors}
+      render json: {errors: user.errors}, status: :unprocessable_entity
     end
   end
 
   # Method to update a specific user. User will need to be authorized.
   def update
-    user = User.find(params[:id])
-    if user.update(user_params)
-      render json: {status: 200, msg: "User details have been updated."}
+    if @user.update(user_params)
+      render json: serialize!(@user)
+    else
+      render json: {errors: @user.errors}, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +46,7 @@ class UsersController < ApplicationController
   # If the user is logged-in we will return the user's information.
   def current
     current_user.update!(last_login: Time.now)
-    json_string = UserSerializer.new(current_user).serialized_json
+    json_string = serialize! current_user
     render json: json_string
   end
 
@@ -46,12 +54,25 @@ class UsersController < ApplicationController
 
   # Setting up strict parameters for when we add account creation.
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :lastname, :dni, :username, :email, :password, :password_confirmation)
+  end
+
+  def set_user
+    if params[:self] == true
+      @user = current_user
+    else
+      @user = User.find(params[:id])
+    end
   end
 
   # Adding a method to check if current_user can update itself.
   # This uses our UserModel method.
   def authorize
     return_unauthorized unless current_user && current_user.can_update_user?(params[:id])
+  end
+
+  # Generate a token for new user
+  def client_token(user)
+    Knock::AuthToken.new payload: {sub: user.id}
   end
 end
