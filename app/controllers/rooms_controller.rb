@@ -48,11 +48,10 @@ class RoomsController < ApplicationController
       errors = [
         {
           "status": "422",
-          "title":  "Invalid State",
-          "detail": "The state is not valid."
-        }
-       ]
-      
+          "title": "Invalid State",
+          "detail": "The state is not valid.",
+        },
+      ]
       render json: errors, status: :unprocessable_entity
     end
   end
@@ -68,8 +67,8 @@ class RoomsController < ApplicationController
   def room_params
     params.require(:room).permit(:title, :description, :price, :lat, :lng, :user_id, :zone_id)
   end
-    
-  # Filter state 
+
+  # Filter state
   def state_is_valid?
     valid_states = %w(to_published to_rented to_draft)
     valid_states.include? params[:state]

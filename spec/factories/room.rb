@@ -5,7 +5,6 @@ FactoryBot.define do
     price { 1 }
     lat { 1.5 }
     lng { 1.5 }
-    state { "MyString" }
     user { nil }
     zone { nil }
   end
