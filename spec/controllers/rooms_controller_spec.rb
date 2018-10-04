@@ -103,4 +103,18 @@ RSpec.describe RoomsController, type: :controller do
       }.to change(Room, :count).by(-1)
     end
   end
+
+  describe "UPDATE #set_state" do
+    it "transition state from DRAFT to PUBLISHED" do
+      room = Room.create! valid_attributes
+      api_auth request, user
+      put :set_state, params: {
+                        room_id: room.to_param,
+                        state: "to_published",
+                      }
+      room.reload
+      expect(response).to have_http_status(:ok)
+      expect(room.state).to eq("published")
+    end
+  end
 end
