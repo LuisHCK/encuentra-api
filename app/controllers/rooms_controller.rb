@@ -42,7 +42,7 @@ class RoomsController < ApplicationController
   # Set state
   def set_state
     if state_is_valid?
-      @room.send params[:state]
+      @room.send(params[:state] + "!")
       render json: @room
     else
       errors = [
@@ -60,7 +60,7 @@ class RoomsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_room
-    @room = current_user.rooms.find_by(id: params[:id])
+    @room = current_user.rooms.find_by(id: params[:id] || params[:room_id])
   end
 
   # Only allow a trusted parameter "white list" through.
