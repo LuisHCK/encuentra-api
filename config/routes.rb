@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :rooms do
-    patch "set_state", to: "rooms#set_state"
+    put "set_state", to: "rooms#set_state"
   end
 
   resources :users
