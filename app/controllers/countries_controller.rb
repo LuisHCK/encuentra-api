@@ -1,4 +1,5 @@
 class CountriesController < ApplicationController
+  before_action :authenticate_user, except: [:show, :index]
   before_action :set_country, only: [:show]
 
   # Render all Countries
@@ -8,7 +9,7 @@ class CountriesController < ApplicationController
     render json: json_string
   end
 
-  def show  
+  def show
     if @country.present?
       render json: CountriesSerializer.new(@country, include: [:cities, :'cities.name']).serialized_json
     else
@@ -21,6 +22,4 @@ class CountriesController < ApplicationController
   def set_country
     @country = Country.find_by(id: params[:id])
   end
-
-  
 end

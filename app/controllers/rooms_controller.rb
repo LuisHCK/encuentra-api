@@ -1,17 +1,16 @@
 class RoomsController < ApplicationController
-  before_action :authenticate_user, except: [:create]
+  before_action :authenticate_user, except: [:show, :index]
   before_action :set_room, only: [:update, :destroy, :set_state]
 
   # GET /rooms
   def index
     @rooms = Room.all
-
-    render json: @rooms
+    render json: serialize!(@rooms, params, "Room")
   end
 
   # GET /rooms/1
   def show
-    render json: Room.find(params[:id])
+    render json: serialize!(Room.find(params[:id]))
   end
 
   # POST /rooms
@@ -19,7 +18,7 @@ class RoomsController < ApplicationController
     @room = current_user.rooms.new(room_params)
 
     if @room.save
-      render json: @room, status: :created
+      render json: serialize!(@room), status: :created
     else
       render json: @room.errors, status: :unprocessable_entity
     end
@@ -43,7 +42,7 @@ class RoomsController < ApplicationController
   def set_state
     if state_is_valid?
       @room.send(params[:state] + "!")
-      render json: @room
+      render json: serialize!(@room)
     else
       errors = [
         {
@@ -65,7 +64,29 @@ class RoomsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def room_params
-    params.require(:room).permit(:title, :description, :price, :lat, :lng, :user_id, :zone_id)
+    params.require(:room).permit(
+      :title,
+      :description,
+      :price,
+      :lat,
+      :lng,
+      :user_id,
+      :zone_id,
+      :include
+    )
+  end
+
+  def json_api_params
+    params.permit(include: [], filter: [], fields: [])
+    # begin
+    #   return {
+    #            include: JSON.parse(params[:include]),
+    #            filter: JSON.parse(params[:filter]),
+    #            fields: JSON.parse(params[:fields]),
+    #          }
+    # rescue => exception
+    #   return {}
+    # end
   end
 
   # Filter state
