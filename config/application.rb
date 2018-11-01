@@ -42,5 +42,9 @@ module Api
 
     # Prevent ddos and abuse of requests
     config.middleware.use Rack::Attack
+
+    config.generators do |g|
+      g.test_framework :rspec
+    end
   end
 end
