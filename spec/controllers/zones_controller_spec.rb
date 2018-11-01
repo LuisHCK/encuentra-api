@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ZonesController, type: :controller do
-  let(:user) { create(:user) }
+  let(:user) { create(:admin) }
   let(:city) { create(:city) }
   let(:valid_attributes) { FactoryBot.attributes_for(:zone, city_id: city.id) }
   let(:invalid_attributes) { FactoryBot.attributes_for(:zone, latitude: nil, longitude: nil, city: city) }

@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   # Use Knock to make sure the current_user is authenticated before completing request.
-  before_action :authenticate_user, except: [:show, :index]
+  before_action :authenticate_user, except: [:show, :index, :create]
   before_action :set_user, only: [:show, :update]
   before_action :authorize, only: [:update]
+  skip_authorize_resource only: :create
 
   # Should work if the current_user is authenticated.
   def index

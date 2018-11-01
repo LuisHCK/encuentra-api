@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  after_create :assign_default_role
   rolify
 
   # Necessary to authenticate
@@ -30,5 +31,11 @@ class User < ApplicationRecord
 
   def can_update_user?(user_id)
     id.to_s == user_id.to_s
+  end
+
+  private
+
+  def assign_default_role
+    self.add_role(:basic)
   end
 end
