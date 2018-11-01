@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe RoomsController, type: :controller do
-  let(:user) { create(:admin) }
+  let(:user) { create(:publisher) }
 
   let(:country) { create(:country) }
 
