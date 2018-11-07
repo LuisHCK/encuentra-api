@@ -46,5 +46,10 @@ module Api
     config.generators do |g|
       g.test_framework :rspec
     end
+
+    config.middleware.use Rack::MethodOverride
+    config.middleware.use ActionDispatch::Flash
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
   end
 end

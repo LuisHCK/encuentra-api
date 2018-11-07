@@ -4,4 +4,6 @@ class RoomSerializer
 
   belongs_to :user
   belongs_to :zone
+
+  has_many :categories
 end

@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => "/admin", as: "rails_admin"
+
+  # Resources
+  resources :categories
+
   resources :rooms do
     patch "set_state", to: "rooms#set_state"
 

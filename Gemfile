@@ -74,3 +74,5 @@ gem "rolify"
 
 # State machine
 gem 'aasm'
+
+gem 'rails_admin'

@@ -36,6 +36,6 @@ class User < ApplicationRecord
   private
 
   def assign_default_role
-    self.add_role(:basic)
+    self.add_role(:publisher)
   end
 end
