@@ -18,6 +18,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 # Json Serializer
 gem 'fast_jsonapi'
+gem 'blueprinter'
 
 # Json web token AUTH
 gem 'knock'
@@ -25,7 +26,7 @@ gem 'knock'
 gem 'jwt'
 
 # Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
+gem 'mini_magick', '~> 4.8'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

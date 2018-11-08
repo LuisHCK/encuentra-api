@@ -10,7 +10,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1
   def show
-    render json: serialize!(Room.find(params[:id]))
+    render json: serialize!(Room.find(params[:id]), params)
   end
 
   # POST /rooms

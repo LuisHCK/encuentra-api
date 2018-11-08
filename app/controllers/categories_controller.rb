@@ -5,12 +5,12 @@ class CategoriesController < ApplicationController
   def index
     @categories = Category.all
 
-    render json: @categories
+    render json: serialize!(@categories, {}, "Category")
   end
 
   # GET /categories/1
   def show
-    render json: @category
+    render json: serialize!(@category)
   end
 
   # POST /categories
@@ -18,7 +18,7 @@ class CategoriesController < ApplicationController
     @category = Category.new(category_params)
 
     if @category.save
-      render json: @category, status: :created, location: @category
+      render json: serialize!(@category), status: :created, location: @category
     else
       render json: @category.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1
   def update
     if @category.update(category_params)
-      render json: @category
+      render json: serialize!(@category)
     else
       render json: @category.errors, status: :unprocessable_entity
     end
@@ -39,13 +39,14 @@ class CategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_category
-      @category = Category.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def category_params
-      params.require(:category).permit(:name, :code)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_category
+    @category = Category.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def category_params
+    params.require(:category).permit(:name, :code)
+  end
 end
