@@ -5,14 +5,13 @@ class Room < ApplicationRecord
   belongs_to :user
   belongs_to :zone
   has_many :meetings
-  has_many_attached :photos
+  belongs_to :category
   has_one :city, through: :zone
+  has_many_attached :photos
 
   # Fields validation
   validates_presence_of :title
   validates_presence_of :description
-
-  belongs_to :category
 
   # States
   aasm column: "state" do

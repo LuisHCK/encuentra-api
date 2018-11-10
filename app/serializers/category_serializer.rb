@@ -1,6 +1,6 @@
 class CategorySerializer
   include FastJsonapi::ObjectSerializer
-  set_type :city
+  set_type :category
   set_id :id
   attributes :id, :name, :code, :image
 
