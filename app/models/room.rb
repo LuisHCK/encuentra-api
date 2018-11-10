@@ -39,17 +39,8 @@ class Room < ApplicationRecord
 
   rails_admin do
     edit do
-      field :title
-      field :description
-      field :price
-      field :lat
-      field :lng
-      field :state
-      field :user
-      field :zone
-      field :address
-      field :currency
-      field :category
+      include_all_fields
+      exclude_fields :photos
       field :photos, :multiple_active_storage
     end
   end

@@ -28,6 +28,11 @@ class UsersController < ApplicationController
 
   # Method to update a specific user. User will need to be authorized.
   def update
+    if params[:user][:password].blank? && params[:user][:password_confirmation].blank?
+      params[:user].delete("password")
+      params[:user].delete("password_confirmation")
+    end
+
     if @user.update(user_params)
       render json: serialize!(@user)
     else

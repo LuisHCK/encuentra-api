@@ -1,6 +1,6 @@
 class RoomSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :title, :description, :price, :lat, :lng, :state, :photos, :address, :currency
+  attributes :title, :description, :price, :lat, :lng, :state, :photos, :address, :currency, :days_available, :hours_available, :phones
 
   belongs_to :user
   belongs_to :zone
@@ -16,6 +16,30 @@ class RoomSerializer
       p
     else
       [Rails.application.default_url_options[:host] + "/assets/room_default_cover.jpeg"]
+    end
+  end
+
+  attribute :days_available do |object|
+    begin
+      JSON.parse(object.days_available)
+    rescue => exception
+      []
+    end
+  end
+
+  attribute :hours_available do |object|
+    begin
+      JSON.parse(object.hours_available)
+    rescue => exception
+      []
+    end
+  end
+
+  attribute :phones do |object|
+    begin
+      JSON.parse(object.phones)
+    rescue => exception
+      []
     end
   end
 end

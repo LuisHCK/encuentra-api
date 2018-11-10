@@ -9,6 +9,15 @@ puts "Seeding Database"
 
 puts "#########################"
 
+user = User.new(username: "luishck",
+                email: "luisjcenteno17@gmail.com",
+                name: "Luis",
+                lastname: "Centeno",
+                password: "ljco1800")
+
+puts "User created!" if user.save
+user.add_role(:admin)
+
 country = Country.new(iso: "NI", name: "Nicaragua", iso3: "NIC", latitude: 12.1328200, longitude: -86.2504000)
 puts "Country Created!" if country.save
 
@@ -17,3 +26,18 @@ puts "City Created!" if city.save
 
 zone = Zone.new(name: "Reparto Shick", city_id: city.id, latitude: 12.1328200, longitude: -86.2504000)
 puts "Zone Created!" if zone.save
+
+category = Category.new(name: "Cuartos", code: "rooms")
+puts "Category Created!" if category.save
+
+room = Room.new(title: "Cuarto para estudiante",
+                description: "Cuarto para estudiante con todos los serivicios",
+                price: 100,
+                lat: 12.1328200,
+                lng: -86.2504000,
+                address: "del juzgado 1c 1/2 al este",
+                currency: "$",
+                category: category,
+                zone: zone,
+                user: user)
+puts "Room created!" if room.save
