@@ -7,5 +7,6 @@ FactoryBot.define do
     lng { 1.5 }
     user { nil }
     zone { nil }
+    category { }
   end
 end

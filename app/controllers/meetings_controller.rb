@@ -5,12 +5,12 @@ class MeetingsController < ApplicationController
   def index
     @meetings = Meeting.where(room_id: params[:room_id]).all()
 
-    render json: serialize!(@meetings, params, "Meeting")
+    render json: @meetings
   end
 
   # GET /meetings/1
   def show
-    render json: serialize!(@meeting, params)
+    render json: @meeting
   end
 
   # POST /meetings
@@ -23,7 +23,7 @@ class MeetingsController < ApplicationController
     end
 
     if @meeting.save
-      render json: serialize!(@meeting, params), status: :created
+      render json: @meeting, status: :created
     else
       render json: @meeting.errors, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class MeetingsController < ApplicationController
   # PATCH/PUT /meetings/1
   def update
     if @meeting.update(meeting_params)
-      render json: serialize!(@meeting, params)
+      render json: @meeting
     else
       render json: @meeting.errors, status: :unprocessable_entity
     end
@@ -46,7 +46,7 @@ class MeetingsController < ApplicationController
   def set_state
     if state_is_valid?
       @meeting.send(params[:state] + "!")
-      render json: serialize!(@meeting, params)
+      render json: @meeting
     else
       errors = [
         {
