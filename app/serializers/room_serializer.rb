@@ -6,6 +6,7 @@ class RoomSerializer
   belongs_to :zone
   belongs_to :category
   has_one :city
+  has_many :services
 
   attribute :photos do |object|
     if object.photos.attached?
