@@ -1,3 +1,5 @@
 class ZoneSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :name, :latitude, :longitude
+
+  belongs_to :city
 end

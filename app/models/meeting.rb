@@ -3,7 +3,7 @@ class Meeting < ApplicationRecord
 
   belongs_to :user
   belongs_to :room
-  has_one :host, through: :room, source: :user
+  # has_one :host, through: :room, source: :user
 
   # Validations
   validates_presence_of :date_time

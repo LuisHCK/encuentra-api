@@ -1,3 +1,4 @@
 class ServiceSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :name, :icon
+  belongs_to :room
 end

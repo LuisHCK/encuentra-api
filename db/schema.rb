@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_052119) do
+ActiveRecord::Schema.define(version: 2018_11_16_060813) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -70,6 +70,18 @@ ActiveRecord::Schema.define(version: 2018_11_13_052119) do
     t.index ["name"], name: "index_countries_on_name"
   end
 
+  create_table "meeting_availabilities", force: :cascade do |t|
+    t.date "date_from"
+    t.date "date_to"
+    t.time "time_from"
+    t.time "time_to"
+    t.boolean "skip_weekends"
+    t.integer "room_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_meeting_availabilities_on_room_id"
+  end
+
   create_table "meetings", force: :cascade do |t|
     t.integer "user_id"
     t.integer "room_id"
@@ -122,6 +134,7 @@ ActiveRecord::Schema.define(version: 2018_11_13_052119) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "icon"
     t.index ["room_id"], name: "index_services_on_room_id"
   end
 

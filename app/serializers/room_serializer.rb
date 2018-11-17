@@ -1,9 +1,19 @@
 class RoomSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :price, :lat, :lng, :state, :created_at, :updated_at, :address, :currency
+  include Rails.application.routes.url_helpers
+  attributes :id, :title, :description, :price, :lat, :lng, :state, :created_at, :updated_at, :address, :currency, :photos_urls, :city
 
   belongs_to :user
   belongs_to :zone
   belongs_to :category
   has_many :services
   has_many :meetings
+  has_one :meeting_availability
+
+  def photos_urls
+    if object.photos.attached?
+      object.photos.map { |p| rails_blob_url(p) }
+    else
+      return [Rails.application.default_url_options[:host] + "/assets/room_default_cover.jpeg"]
+    end
+  end
 end

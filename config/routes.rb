@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :meeting_availabilities
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
 
   # Resources
