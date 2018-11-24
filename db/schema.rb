@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_16_060813) do
+ActiveRecord::Schema.define(version: 2018_11_24_052426) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -70,18 +70,6 @@ ActiveRecord::Schema.define(version: 2018_11_16_060813) do
     t.index ["name"], name: "index_countries_on_name"
   end
 
-  create_table "meeting_availabilities", force: :cascade do |t|
-    t.date "date_from"
-    t.date "date_to"
-    t.time "time_from"
-    t.time "time_to"
-    t.boolean "skip_weekends"
-    t.integer "room_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["room_id"], name: "index_meeting_availabilities_on_room_id"
-  end
-
   create_table "meetings", force: :cascade do |t|
     t.integer "user_id"
     t.integer "room_id"
@@ -90,6 +78,7 @@ ActiveRecord::Schema.define(version: 2018_11_16_060813) do
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone"
     t.index ["room_id"], name: "index_meetings_on_room_id"
     t.index ["user_id"], name: "index_meetings_on_user_id"
   end
@@ -124,6 +113,9 @@ ActiveRecord::Schema.define(version: 2018_11_16_060813) do
     t.string "address"
     t.string "currency"
     t.integer "category_id"
+    t.json "services"
+    t.json "phones"
+    t.json "meeting_availabilities"
     t.index ["category_id"], name: "index_rooms_on_category_id"
     t.index ["user_id"], name: "index_rooms_on_user_id"
     t.index ["zone_id"], name: "index_rooms_on_zone_id"

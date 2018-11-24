@@ -73,7 +73,8 @@ class RoomsController < ApplicationController
       :zone_id,
       :category_id,
       :address,
-      :currency
+      :currency,
+      services:[]
     )
   end
 

@@ -8,8 +8,6 @@ class Room < ApplicationRecord
   belongs_to :category
   has_one :city, through: :zone
   has_many_attached :photos
-  has_many :services
-  has_one :meeting_availability
 
   # Fields validation
   validates_presence_of :title

@@ -1,9 +1,10 @@
 class MeetingsController < ApplicationController
+  before_action :authenticate_user
   before_action :set_meeting, only: [:show, :update, :destroy, :set_state]
 
   # GET /meetings
   def index
-    @meetings = Meeting.where(room_id: params[:room_id]).all()
+    @meetings = current_user.meetings.all()
 
     render json: @meetings
   end
@@ -15,9 +16,9 @@ class MeetingsController < ApplicationController
 
   # POST /meetings
   def create
-    @meeting = Meeting.new(meeting_params)
+    @meeting = current_user.meetings.new(meeting_params)
 
-    if Meeting.where(room_id: params[:room_id], user_id: params[:meeting][:user_id]).any?
+    if Meeting.where(room_id: params[:room_id], user_id: current_user.id).any?
       @meeting.errors.add(:room_id, "A meeting has already been scheduled for this room")
       return render json: @meeting.errors, status: :unprocessable_entity
     end
@@ -69,7 +70,7 @@ class MeetingsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def meeting_params
-    params.require(:meeting).permit(:user_id, :room_id, :date_time, :message, :state)
+    params.require(:meeting).permit(:room_id, :date_time, :message, :phone)
   end
 
   # Filter state

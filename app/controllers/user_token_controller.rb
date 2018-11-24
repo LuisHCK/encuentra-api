@@ -1,4 +1,5 @@
 class UserTokenController < Knock::AuthTokenController
+  include Rails.application.routes.url_helpers
   skip_before_action :verify_authenticity_token
 
   def create
@@ -18,7 +19,8 @@ class UserTokenController < Knock::AuthTokenController
     user["roles"] = entity.roles
     user["dni"] = entity.dni
     if entity.avatar.attached?
-      user["avatar"] = rails_blob_path(entity.avatar)
+      variant = entity.avatar.variant(resize: "118x110")
+      user["avatar"] = Rails.application.default_url_options[:host] + rails_representation_url(variant, only_path: true)      
     else
       user["avatar"] = ""
     end

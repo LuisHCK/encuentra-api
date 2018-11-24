@@ -76,5 +76,3 @@ gem "rolify"
 gem 'aasm'
 
 gem 'rails_admin'
-
-gem 'rufo'

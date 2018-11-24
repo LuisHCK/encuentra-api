@@ -6,7 +6,7 @@ class UserSerializer < ActiveModel::Serializer
     if object.avatar.attached?
     # .processed.service_url
       variant = object.avatar.variant(resize: "118x110")
-      return rails_representation_url(variant, only_path: true)
+      return Rails.application.default_url_options[:host] + rails_representation_url(variant, only_path: true)
     end
   end
 end
