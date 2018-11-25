@@ -11,7 +11,7 @@ class MeetingsController < ApplicationController
 
   # GET /meetings/1
   def show
-    render json: @meeting
+    render json: @meeting, include: "room.zone"
   end
 
   # POST /meetings
@@ -64,8 +64,7 @@ class MeetingsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_meeting
-    @room = Room.find(params[:room_id])
-    @meeting = @room.meetings.find(params[:id] || params[:meeting_id])
+    @meeting = current_user.meetings.find(params[:id] || params[:meeting_id])
   end
 
   # Only allow a trusted parameter "white list" through.
