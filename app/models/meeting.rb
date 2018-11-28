@@ -13,6 +13,7 @@ class Meeting < ApplicationRecord
     state :pending, initial: true
     state :accepted
     state :rejected
+    state :cancelled
     state :finished
 
     event :to_accepted do
@@ -21,6 +22,10 @@ class Meeting < ApplicationRecord
 
     event :to_rejected do
       transitions from: [:pending, :accepted], to: :rejected
+    end
+
+    event :to_cancelled do
+      transitions from: [:pending], to: :cancelled
     end
 
     event :to_finished do

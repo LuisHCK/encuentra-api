@@ -4,8 +4,17 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
-    @rooms = Room.all
-    render json: @rooms
+    @rooms = Room.page(params[:page]).per(10)
+    render json: {
+      rooms: ActiveModel::SerializableResource.new(
+        @rooms, adapter: :json
+      ).as_json[:rooms],
+      pages: {
+        prev: @rooms.prev_page,
+        next: @rooms.next_page,
+        total: @rooms.total_pages
+      }
+    }
   end
 
   # GET /rooms/1

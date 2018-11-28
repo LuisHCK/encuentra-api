@@ -74,7 +74,7 @@ class MeetingsController < ApplicationController
 
   # Filter state
   def state_is_valid?
-    valid_states = %w(to_accepted to_rejected to_finished)
+    valid_states = %w(to_accepted to_rejected to_finished to_cancelled)
     valid_states.include? params[:state]
   end
 end

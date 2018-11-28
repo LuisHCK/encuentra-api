@@ -76,3 +76,8 @@ gem "rolify"
 gem 'aasm'
 
 gem 'rails_admin'
+
+gem 'faker'
+
+# Pagination
+gem 'kaminari'
