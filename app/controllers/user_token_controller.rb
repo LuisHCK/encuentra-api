@@ -12,18 +12,6 @@ class UserTokenController < Knock::AuthTokenController
   private
 
   def serialize_user
-    user = {}
-    user["name"] = entity.name
-    user["lastname"] = entity.lastname
-    user["email"] = entity.email
-    user["roles"] = entity.roles
-    user["dni"] = entity.dni
-    if entity.avatar.attached?
-      variant = entity.avatar.variant(resize: "118x110")
-      user["avatar"] = Rails.application.default_url_options[:host] + rails_representation_url(variant, only_path: true)      
-    else
-      user["avatar"] = ""
-    end
-    return user
+    UserSerializer.new(entity).as_json
   end
 end
