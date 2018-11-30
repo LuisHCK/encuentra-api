@@ -5,16 +5,13 @@ class RoomsController < ApplicationController
   # GET /rooms
   def index
     @rooms = Room.page(params[:page]).per(10)
-    render json: {
-      rooms: ActiveModel::SerializableResource.new(
-        @rooms, adapter: :json
-      ).as_json[:rooms],
-      pages: {
-        prev: @rooms.prev_page,
-        next: @rooms.next_page,
-        total: @rooms.total_pages
-      }
-    }
+    serialize_rooms @rooms
+  end
+
+  # GET user rooms => user/:id/rooms 
+  def user_rooms
+    @rooms = Room.where(user_id: params[:user_id]).page(params[:page]).per(10)
+    serialize_rooms @rooms
   end
 
   # GET /rooms/1
@@ -83,7 +80,8 @@ class RoomsController < ApplicationController
       :category_id,
       :address,
       :currency,
-      services:[]
+      services:[],
+      photos: []
     )
   end
 
@@ -91,5 +89,18 @@ class RoomsController < ApplicationController
   def state_is_valid?
     valid_states = %w(to_published to_rented to_draft)
     valid_states.include? params[:state]
+  end
+
+  def serialize_rooms(rooms)
+    return render json: {
+      rooms: ActiveModel::SerializableResource.new(
+        rooms, adapter: :json
+      ).as_json[:rooms],
+      pages: {
+        prev: rooms.prev_page,
+        next: rooms.next_page,
+        total: rooms.total_pages
+      }
+    }
   end
 end
