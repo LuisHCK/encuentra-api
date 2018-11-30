@@ -1,29 +1,30 @@
 class MeetingsController < ApplicationController
+  before_action :authenticate_user
   before_action :set_meeting, only: [:show, :update, :destroy, :set_state]
 
   # GET /meetings
   def index
-    @meetings = Meeting.where(room_id: params[:room_id]).all()
+    @meetings = current_user.meetings.all()
 
-    render json: serialize!(@meetings, params, "Meeting")
+    render json: @meetings
   end
 
   # GET /meetings/1
   def show
-    render json: serialize!(@meeting, params)
+    render json: @meeting, include: "room.zone"
   end
 
   # POST /meetings
   def create
-    @meeting = Meeting.new(meeting_params)
+    @meeting = current_user.meetings.new(meeting_params)
 
-    if Meeting.where(room_id: params[:room_id], user_id: params[:meeting][:user_id]).any?
+    if Meeting.where(room_id: params[:room_id], user_id: current_user.id).any?
       @meeting.errors.add(:room_id, "A meeting has already been scheduled for this room")
       return render json: @meeting.errors, status: :unprocessable_entity
     end
 
     if @meeting.save
-      render json: serialize!(@meeting, params), status: :created
+      render json: @meeting, status: :created
     else
       render json: @meeting.errors, status: :unprocessable_entity
     end
@@ -32,7 +33,7 @@ class MeetingsController < ApplicationController
   # PATCH/PUT /meetings/1
   def update
     if @meeting.update(meeting_params)
-      render json: serialize!(@meeting, params)
+      render json: @meeting
     else
       render json: @meeting.errors, status: :unprocessable_entity
     end
@@ -46,7 +47,7 @@ class MeetingsController < ApplicationController
   def set_state
     if state_is_valid?
       @meeting.send(params[:state] + "!")
-      render json: serialize!(@meeting, params)
+      render json: @meeting
     else
       errors = [
         {
@@ -63,18 +64,17 @@ class MeetingsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_meeting
-    @room = Room.find(params[:room_id])
-    @meeting = @room.meetings.find(params[:id] || params[:meeting_id])
+    @meeting = current_user.meetings.find(params[:id] || params[:meeting_id])
   end
 
   # Only allow a trusted parameter "white list" through.
   def meeting_params
-    params.require(:meeting).permit(:user_id, :room_id, :date_time, :message, :state)
+    params.require(:meeting).permit(:room_id, :date_time, :message, :phone)
   end
 
   # Filter state
   def state_is_valid?
-    valid_states = %w(to_accepted to_rejected to_finished)
+    valid_states = %w(to_accepted to_rejected to_finished to_cancelled)
     valid_states.include? params[:state]
   end
 end

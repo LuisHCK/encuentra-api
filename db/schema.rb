@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_10_070912) do
+ActiveRecord::Schema.define(version: 2018_11_28_021552) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 2018_11_10_070912) do
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone"
     t.index ["room_id"], name: "index_meetings_on_room_id"
     t.index ["user_id"], name: "index_meetings_on_user_id"
   end
@@ -112,13 +113,22 @@ ActiveRecord::Schema.define(version: 2018_11_10_070912) do
     t.string "address"
     t.string "currency"
     t.integer "category_id"
-    t.string "services"
-    t.string "days_available"
-    t.string "hours_available"
-    t.string "phones"
+    t.json "services"
+    t.json "phones"
+    t.json "meeting_availabilities"
+    t.string "promotion"
     t.index ["category_id"], name: "index_rooms_on_category_id"
     t.index ["user_id"], name: "index_rooms_on_user_id"
     t.index ["zone_id"], name: "index_rooms_on_zone_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.integer "room_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "icon"
+    t.index ["room_id"], name: "index_services_on_room_id"
   end
 
   create_table "users", force: :cascade do |t|

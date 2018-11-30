@@ -3,7 +3,7 @@ class Meeting < ApplicationRecord
 
   belongs_to :user
   belongs_to :room
-  has_one :host, through: :room, source: :user
+  # has_one :host, through: :room, source: :user
 
   # Validations
   validates_presence_of :date_time
@@ -13,6 +13,7 @@ class Meeting < ApplicationRecord
     state :pending, initial: true
     state :accepted
     state :rejected
+    state :cancelled
     state :finished
 
     event :to_accepted do
@@ -21,6 +22,10 @@ class Meeting < ApplicationRecord
 
     event :to_rejected do
       transitions from: [:pending, :accepted], to: :rejected
+    end
+
+    event :to_cancelled do
+      transitions from: [:pending], to: :cancelled
     end
 
     event :to_finished do

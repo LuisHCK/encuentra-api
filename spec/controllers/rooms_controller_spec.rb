@@ -9,9 +9,25 @@ RSpec.describe RoomsController, type: :controller do
 
   let(:zone) { create(:zone, city: city) }
 
-  let(:valid_attributes) { FactoryBot.attributes_for(:room, user_id: user.id, zone_id: zone.id) }
+  let(:category) { create(:category) }
 
-  let(:invalid_attributes) { FactoryBot.attributes_for(:room, title: nil, description: nil) }
+  let(:valid_attributes) {
+    FactoryBot.attributes_for(
+      :room,
+      user_id: user.id,
+      zone_id: zone.id,
+      category_id: category.id,
+    )
+  }
+
+  let(:invalid_attributes) {
+    FactoryBot.attributes_for(
+      :room,
+      title: nil,
+      description: nil,
+      category_id: category.id,
+    )
+  }
 
   describe "GET #index" do
     it "returns a success response" do

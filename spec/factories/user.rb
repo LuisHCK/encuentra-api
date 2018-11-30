@@ -3,6 +3,7 @@ FactoryBot.define do
     username { "newUser" }
     email { "user@email.com" }
     password { "password01" }
+    password_confirmation { "password01" }
     dni { "1234567890" }
     name { "faker" }
     lastname { "user" }
@@ -12,6 +13,7 @@ FactoryBot.define do
     username { "admin" }
     email { "admin@email.com" }
     password { "password01" }
+    password_confirmation { "password01" }
     dni { "423498444" }
     name { "Administrator" }
     lastname { "User" }
@@ -22,6 +24,7 @@ FactoryBot.define do
     username { "publisher" }
     email { "publisher@email.com" }
     password { "password01" }
+    password_confirmation { "password01" }
     dni { "213234433" }
     name { "Publisher" }
     lastname { "User" }

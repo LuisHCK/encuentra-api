@@ -1,13 +1,12 @@
-class UserSerializer
-  include FastJsonapi::ObjectSerializer
-  # set_type :user
-  attributes :id, :email, :username, :avatar, :dni, :created_at, :updated_at, :last_login, :name, :lastname
+class UserSerializer < ActiveModel::Serializer
+  include Rails.application.routes.url_helpers
+  attributes :id, :username, :email, :dni, :name, :lastname, :avatar_url
 
-  attribute :avatar do |object|
+  def avatar_url
     if object.avatar.attached?
-      Rails.application.routes.url_helpers.rails_blob_url(object.avatar)
-    else
-      Rails.application.default_url_options[:host] + "/assets/default_user_icon.png"
+    # .processed.service_url
+      variant = object.avatar.variant(resize: "118x110")
+      return Rails.application.default_url_options[:host] + rails_representation_url(variant, only_path: true)
     end
   end
 end

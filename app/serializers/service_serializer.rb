@@ -1,6 +1,4 @@
-class ServiceSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :name
-
-  belogns_to :user
+class ServiceSerializer < ActiveModel::Serializer
+  attributes :id, :name, :icon
+  belongs_to :room
 end

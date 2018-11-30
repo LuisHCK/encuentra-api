@@ -5,7 +5,9 @@ RSpec.describe MeetingsController, type: :controller do
 
   let(:user) { create(:user) }
 
-  let(:room) { create(:room, user: user, zone: create(:zone)) }
+  let(:category) { create(:category) }
+
+  let(:room) { create(:room, user: user, zone: create(:zone), category: category) }
 
   let(:valid_attributes) {
     FactoryBot.attributes_for(:meeting, room_id: room.id, user_id: user.id)

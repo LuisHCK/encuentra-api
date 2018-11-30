@@ -5,12 +5,12 @@ class CategoriesController < ApplicationController
   def index
     @categories = Category.all
 
-    render json: serialize!(@categories, {}, "Category")
+    render json: @categories
   end
 
   # GET /categories/1
   def show
-    render json: serialize!(@category)
+    render json: @category
   end
 
   # POST /categories
@@ -18,7 +18,7 @@ class CategoriesController < ApplicationController
     @category = Category.new(category_params)
 
     if @category.save
-      render json: serialize!(@category), status: :created, location: @category
+      render json: @category, status: :created, location: @category
     else
       render json: @category.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
   # PATCH/PUT /categories/1
   def update
     if @category.update(category_params)
-      render json: serialize!(@category)
+      render json: @category
     else
       render json: @category.errors, status: :unprocessable_entity
     end

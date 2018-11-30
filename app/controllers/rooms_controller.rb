@@ -4,13 +4,19 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
-    @rooms = Room.all
-    render json: serialize!(@rooms, params, "Room")
+    @rooms = Room.page(params[:page]).per(10)
+    serialize_rooms @rooms
+  end
+
+  # GET user rooms => user/:id/rooms 
+  def user_rooms
+    @rooms = Room.where(user_id: params[:user_id]).page(params[:page]).per(10)
+    serialize_rooms @rooms
   end
 
   # GET /rooms/1
   def show
-    render json: serialize!(Room.find(params[:id]), params)
+    render json: Room.find(params[:id])
   end
 
   # POST /rooms
@@ -18,7 +24,7 @@ class RoomsController < ApplicationController
     @room = current_user.rooms.new(room_params)
 
     if @room.save
-      render json: serialize!(@room), status: :created
+      render json: @room, status: :created
     else
       render json: @room.errors, status: :unprocessable_entity
     end
@@ -42,7 +48,7 @@ class RoomsController < ApplicationController
   def set_state
     if state_is_valid?
       @room.send(params[:state] + "!")
-      render json: serialize!(@room)
+      render json: @room
     else
       errors = [
         {
@@ -70,28 +76,31 @@ class RoomsController < ApplicationController
       :price,
       :lat,
       :lng,
-      :user_id,
       :zone_id,
-      :include
+      :category_id,
+      :address,
+      :currency,
+      services:[],
+      photos: []
     )
-  end
-
-  def json_api_params
-    params.permit(include: [], filter: [], fields: [])
-    # begin
-    #   return {
-    #            include: JSON.parse(params[:include]),
-    #            filter: JSON.parse(params[:filter]),
-    #            fields: JSON.parse(params[:fields]),
-    #          }
-    # rescue => exception
-    #   return {}
-    # end
   end
 
   # Filter state
   def state_is_valid?
     valid_states = %w(to_published to_rented to_draft)
     valid_states.include? params[:state]
+  end
+
+  def serialize_rooms(rooms)
+    return render json: {
+      rooms: ActiveModel::SerializableResource.new(
+        rooms, adapter: :json
+      ).as_json[:rooms],
+      pages: {
+        prev: rooms.prev_page,
+        next: rooms.next_page,
+        total: rooms.total_pages
+      }
+    }
   end
 end

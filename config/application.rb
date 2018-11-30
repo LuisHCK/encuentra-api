@@ -51,5 +51,6 @@ module Api
     config.middleware.use ActionDispatch::Flash
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+    config.active_storage.service_urls_expire_in = 24.hours
   end
 end

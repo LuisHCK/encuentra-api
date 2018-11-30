@@ -17,8 +17,7 @@ gem 'puma', '~> 3.11'
 gem 'bcrypt', '~> 3.1.7'
 
 # Json Serializer
-gem 'fast_jsonapi'
-gem 'blueprinter'
+gem 'active_model_serializers', '~> 0.10.0'
 
 # Json web token AUTH
 gem 'knock'
@@ -65,7 +64,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'httparty'
 
 # Image upload management
-gem 'carrierwave'
+gem 'image_processing', '~> 1.2'
 
 # Autorization
 gem 'cancancan', '~> 2.0'
@@ -77,3 +76,8 @@ gem "rolify"
 gem 'aasm'
 
 gem 'rails_admin'
+
+gem 'faker'
+
+# Pagination
+gem 'kaminari'

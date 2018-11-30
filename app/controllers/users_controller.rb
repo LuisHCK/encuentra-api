@@ -7,11 +7,11 @@ class UsersController < ApplicationController
 
   # Should work if the current_user is authenticated.
   def index
-    render json: serialize!(User.all, {}, "User")
+    render json: User.all
   end
 
   def show
-    render json: serialize!(@user)
+    render json: @user
   end
 
   # Method to create a new user using the safe params we setup.
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     if user.save
       # Append JWT token to response headers
       response.set_header("JWT", client_token(user).token)
-      render json: serialize!(user), status: :created
+      render json: user, status: :created
     else
       render json: {errors: user.errors}, status: :unprocessable_entity
     end
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     end
 
     if @user.update(user_params)
-      render json: serialize!(@user)
+      render json: @user
     else
       render json: {errors: @user.errors}, status: :unprocessable_entity
     end
@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   # If the user is logged-in we will return the user's information.
   def current
     current_user.update!(last_login: Time.now)
-    json_string = serialize! current_user
+    json_string = current_user
     render json: json_string
   end
 

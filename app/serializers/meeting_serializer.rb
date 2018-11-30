@@ -1,7 +1,5 @@
-class MeetingSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :date_time, :message, :created_at
-
-  belongs_to :room
+class MeetingSerializer < ActiveModel::Serializer
+  attributes :id, :date_time, :message, :state, :created_at, :updated_at
   belongs_to :user
+  belongs_to :room
 end
