@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     patch "set_state", to: "meetings#set_state"
   end
 
-  resources :users
+  resources :users do
+    get "rooms", to: "rooms#user_rooms"
+  end
 
   resources :zones do
   end
