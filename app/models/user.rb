@@ -9,6 +9,7 @@ class User < ApplicationRecord
   # Relationships
   has_many :rooms
   has_many :meetings
+  belongs_to :country
 
   # Now Using activestorage instead CarrierWave
   # mount_uploader :avatar, AvatarUploader

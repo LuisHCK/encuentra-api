@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'cities/index'
+  get "cities/index"
   resources :meeting_availabilities
   mount RailsAdmin::Engine => "/admin", as: "rails_admin"
 
@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :rooms do
     patch "set_state", to: "rooms#set_state"
+    get "meetings", to: "rooms#meetings"
   end
 
   resources :meetings do
@@ -18,10 +19,9 @@ Rails.application.routes.draw do
     get "rooms", to: "rooms#user_rooms"
   end
 
-  resources :zones do
+  resources :cities do
+    resources :zones
   end
-
-  get "cities", to: "cities#index"
 
   # Authentication
   post "auth/basic" => "user_token#create"

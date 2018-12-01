@@ -7,6 +7,7 @@ FactoryBot.define do
     dni { "1234567890" }
     name { "faker" }
     lastname { "user" }
+    country
   end
 
   factory :admin, class: "User" do
@@ -17,6 +18,7 @@ FactoryBot.define do
     dni { "423498444" }
     name { "Administrator" }
     lastname { "User" }
+    country
     after(:create) { |user| user.add_role(:admin) }
   end
 
@@ -28,6 +30,7 @@ FactoryBot.define do
     dni { "213234433" }
     name { "Publisher" }
     lastname { "User" }
+    country
     after(:create) { |user| user.add_role(:publisher) }
   end
 end

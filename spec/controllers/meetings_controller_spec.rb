@@ -1,13 +1,19 @@
 require "rails_helper"
 
 RSpec.describe MeetingsController, type: :controller do
-  let(:publisher) { create(:publisher) }
+  let(:country) { create(:country) }
 
-  let(:user) { create(:user) }
+  let(:publisher) { create(:publisher, country: country) }
+
+  let(:user) { create(:user, country: country) }
 
   let(:category) { create(:category) }
 
-  let(:room) { create(:room, user: user, zone: create(:zone), category: category) }
+  let(:city) { create(:city, country: country) }
+
+  let(:zone) { create(:zone, city: city) }
+
+  let(:room) { create(:room, user: user, zone: zone, category: category) }
 
   let(:valid_attributes) {
     FactoryBot.attributes_for(:meeting, room_id: room.id, user_id: user.id)

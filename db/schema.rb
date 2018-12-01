@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_021552) do
+ActiveRecord::Schema.define(version: 2018_12_01_030628) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -145,6 +145,8 @@ ActiveRecord::Schema.define(version: 2018_11_28_021552) do
     t.string "gl_uid"
     t.string "tw_uid"
     t.string "avatar"
+    t.integer "country_id"
+    t.index ["country_id"], name: "index_users_on_country_id"
     t.index ["email"], name: "index_users_on_email"
   end
 

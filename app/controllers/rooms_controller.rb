@@ -8,7 +8,7 @@ class RoomsController < ApplicationController
     serialize_rooms @rooms
   end
 
-  # GET user rooms => user/:id/rooms 
+  # GET user rooms => user/:id/rooms
   def user_rooms
     @rooms = Room.where(user_id: params[:user_id]).page(params[:page]).per(10)
     serialize_rooms @rooms
@@ -16,7 +16,13 @@ class RoomsController < ApplicationController
 
   # GET /rooms/1
   def show
-    render json: Room.find(params[:id])
+    @room = Room.find(params[:id])
+    render json: @room
+  end
+
+  def meetings
+    @room = current_user.rooms.find(params[:room_id])
+    render json: @room.meetings.where(state: "pending")
   end
 
   # POST /rooms
@@ -70,19 +76,23 @@ class RoomsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def room_params
-    params.require(:room).permit(
-      :title,
-      :description,
-      :price,
-      :lat,
-      :lng,
-      :zone_id,
-      :category_id,
-      :address,
-      :currency,
-      services:[],
-      photos: []
-    )
+    permited = [:title,
+                :description,
+                :price,
+                :lat,
+                :lng,
+                :zone_id,
+                :category_id,
+                :address,
+                :currency,
+                :services,
+                :phones,
+                photos: []]
+    if params[:usealt] == true || params[:usealt] == "true"
+      params.permit(permited)
+    else
+      params.require(:room).permit(permited)
+    end
   end
 
   # Filter state
@@ -93,14 +103,14 @@ class RoomsController < ApplicationController
 
   def serialize_rooms(rooms)
     return render json: {
-      rooms: ActiveModel::SerializableResource.new(
-        rooms, adapter: :json
-      ).as_json[:rooms],
-      pages: {
-        prev: rooms.prev_page,
-        next: rooms.next_page,
-        total: rooms.total_pages
-      }
-    }
+                    rooms: ActiveModelSerializers::SerializableResource.new(
+                      rooms
+                    ).as_json,
+                    pages: {
+                      prev: rooms.prev_page,
+                      next: rooms.next_page,
+                      total: rooms.total_pages,
+                    },
+                  }
   end
 end

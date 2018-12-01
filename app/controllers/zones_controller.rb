@@ -1,11 +1,10 @@
 class ZonesController < ApplicationController
-  before_action :authenticate_user, except: [:show, :index]
+  before_action :authenticate_user, only: [:create, :update, :destroy]
   before_action :set_zone, only: [:show, :update, :destroy]
 
   # GET /zones
   def index
-    @zones = Zone.all
-
+    @zones = Zone.where(city_id: params[:city_id])
     render json: @zones
   end
 
@@ -19,7 +18,7 @@ class ZonesController < ApplicationController
     @zone = Zone.new(zone_params)
 
     if @zone.save
-      render json: @zone, status: :created, location: @zone
+      render json: @zone, status: :created
     else
       render json: @zone.errors, status: :unprocessable_entity
     end

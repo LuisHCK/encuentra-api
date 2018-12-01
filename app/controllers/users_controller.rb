@@ -60,7 +60,16 @@ class UsersController < ApplicationController
 
   # Setting up strict parameters for when we add account creation.
   def user_params
-    params.require(:user).permit(:name, :lastname, :dni, :username, :email, :password, :password_confirmation)
+    params.require(:user).permit(
+      :name,
+      :lastname,
+      :dni,
+      :username,
+      :email,
+      :password,
+      :password_confirmation,
+      :country_id
+    )
   end
 
   def set_user

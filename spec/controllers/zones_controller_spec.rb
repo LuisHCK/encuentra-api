@@ -1,8 +1,9 @@
 require "rails_helper"
 
 RSpec.describe ZonesController, type: :controller do
-  let(:user) { create(:admin) }
-  let(:city) { create(:city) }
+  let(:country) { create(:country) }
+  let(:user) { create(:admin, country: country) }
+  let(:city) { create(:city, country: country) }
   let(:valid_attributes) { FactoryBot.attributes_for(:zone, city_id: city.id) }
   let(:invalid_attributes) { FactoryBot.attributes_for(:zone, latitude: nil, longitude: nil, city: city) }
 
@@ -10,7 +11,7 @@ RSpec.describe ZonesController, type: :controller do
     it "return a success response" do
       zone = Zone.create! valid_attributes
       api_auth(request, user)
-      get :index, params: {}
+      get :index, params: {city_id: city.to_param}
       expect(response).to be_successful
     end
   end
@@ -19,7 +20,7 @@ RSpec.describe ZonesController, type: :controller do
     it "returns a success response" do
       zone = Zone.create! valid_attributes
       api_auth(request, user)
-      get :show, params: {id: zone.to_param}
+      get :show, params: {city_id: city.to_param, id: zone.to_param}
       expect(response).to be_successful
     end
   end
@@ -28,7 +29,7 @@ RSpec.describe ZonesController, type: :controller do
     context "with valid params" do
       it "creates a new Zone" do
         api_auth(request, user)
-        post :create, params: {zone: valid_attributes}
+        post :create, params: {city_id: city.to_param, zone: valid_attributes}
         expect(response).to have_http_status(:created)
         expect(response.content_type).to eq("application/json")
       end
@@ -37,7 +38,7 @@ RSpec.describe ZonesController, type: :controller do
     context "with invalid params" do
       it "render a JSON response with errors for the new Zone" do
         api_auth(request, user)
-        post :create, params: {zone: invalid_attributes}
+        post :create, params: {city_id: city.to_param, zone: invalid_attributes}
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
       end
@@ -51,7 +52,7 @@ RSpec.describe ZonesController, type: :controller do
       it "updates the requested zone" do
         zone = Zone.create! valid_attributes
         api_auth(request, user)
-        put :update, params: {id: zone.to_param, zone: new_attributes}
+        put :update, params: {city_id: city.to_param, id: zone.to_param, zone: new_attributes}
         zone.reload
         expect(zone.name).to eq("new_zone")
         expect(zone.latitude).to eq(2.2)
@@ -65,7 +66,7 @@ RSpec.describe ZonesController, type: :controller do
       it "render a JSON response with error for the updated zone" do
         zone = Zone.create! valid_attributes
         api_auth(request, user)
-        put :update, params: {id: zone.to_param, zone: invalid_attributes}
+        put :update, params: {city_id: city.to_param, id: zone.to_param, zone: invalid_attributes}
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq("application/json")
       end
@@ -77,7 +78,7 @@ RSpec.describe ZonesController, type: :controller do
       zone = Zone.create! valid_attributes
       api_auth(request, user)
       expect {
-        delete :destroy, params: {id: zone.to_param}
+        delete :destroy, params: {city_id: city.to_param, id: zone.to_param}
       }.to change(Zone, :count).by(-1)
     end
   end

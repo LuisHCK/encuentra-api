@@ -1,12 +1,10 @@
 require "rails_helper"
 
 RSpec.describe UsersController, type: :controller do
+  let(:country) { create(:country) }
 
-  # This should return the minimal set of attributes required to create a valid
-  # User. As you add validations to User, be sure to
-  # adjust the attributes here as well.
   let(:valid_attributes) {
-    FactoryBot.attributes_for(:user)
+    FactoryBot.attributes_for(:user, country_id: country.id)
   }
 
   let(:invalid_attributes) {
@@ -16,6 +14,7 @@ RSpec.describe UsersController, type: :controller do
       lastname: nil,
       username: nil,
       email: nil,
+      country_id: country.id,
     )
   }
 

@@ -8,6 +8,12 @@
             "type": "shell",
             "command": "bundle install",
             "problemMatcher": []
+        },
+        {
+            "label": "Run Server",
+            "type": "shell",
+            "command": "bundle exec rails s",
+            "problemMatcher": []
         }
     ]
 }
