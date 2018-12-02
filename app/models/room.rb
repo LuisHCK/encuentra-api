@@ -35,6 +35,25 @@ class Room < ApplicationRecord
     end
   end
 
+  # Promotion state
+  aasm column: "promoted" do
+    state :none, initial: true
+    state :silver
+    state :gold
+
+    event :to_silver do
+      transitions to: :silver
+    end
+
+    event :to_gold do
+      transitions to: :gold
+    end
+
+    event :to_none do
+      transitions to: :none
+    end
+  end
+
   # For rails admin
   after_save do
     Array(remove_photos).each { |id| photos.find_by_id(id).try(:purge) }
