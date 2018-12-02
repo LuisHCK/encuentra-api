@@ -14,7 +14,8 @@ class RoomSerializer < ActiveModel::Serializer
              :photos_urls,
              :city,
              :services,
-             :phones
+             :phones,
+             :promoted
 
   belongs_to :user
   belongs_to :zone

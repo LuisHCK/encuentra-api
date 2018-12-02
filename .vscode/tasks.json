@@ -1,19 +1,24 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Bundle Install",
-            "type": "shell",
-            "command": "bundle install",
-            "problemMatcher": []
-        },
-        {
-            "label": "Run Server",
-            "type": "shell",
-            "command": "bundle exec rails s",
-            "problemMatcher": []
-        }
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Bundle Install",
+      "type": "shell",
+      "command": "bundle install",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Server",
+      "type": "shell",
+      "command": "bundle exec rails s",
+      "problemMatcher": []
+    },
+    {
+      "label": "Migrate",
+      "type": "shell",
+      "command": "bundle exec rails db:migrate"
+    }
+  ]
 }

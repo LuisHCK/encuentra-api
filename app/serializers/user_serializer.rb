@@ -7,6 +7,8 @@ class UserSerializer < ActiveModel::Serializer
       # .processed.service_url
       variant = object.avatar.variant(resize: "118x110")
       return Rails.application.default_url_options[:host] + rails_representation_url(variant, only_path: true)
+    else
+      return Rails.application.default_url_options[:host] + "/assets/default_user_icon.png"
     end
   end
 end

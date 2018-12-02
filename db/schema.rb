@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_030628) do
+ActiveRecord::Schema.define(version: 2018_12_02_012650) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -94,11 +97,6 @@ ActiveRecord::Schema.define(version: 2018_12_01_030628) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
-  create_table "room_categories", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "rooms", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -112,23 +110,13 @@ ActiveRecord::Schema.define(version: 2018_12_01_030628) do
     t.datetime "updated_at", null: false
     t.string "address"
     t.string "currency"
+    t.string "promoted"
     t.integer "category_id"
     t.json "services"
     t.json "phones"
-    t.json "meeting_availabilities"
-    t.string "promotion"
     t.index ["category_id"], name: "index_rooms_on_category_id"
     t.index ["user_id"], name: "index_rooms_on_user_id"
     t.index ["zone_id"], name: "index_rooms_on_zone_id"
-  end
-
-  create_table "services", force: :cascade do |t|
-    t.integer "room_id"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "icon"
-    t.index ["room_id"], name: "index_services_on_room_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -146,6 +134,7 @@ ActiveRecord::Schema.define(version: 2018_12_01_030628) do
     t.string "tw_uid"
     t.string "avatar"
     t.integer "country_id"
+    t.boolean "is_superuser"
     t.index ["country_id"], name: "index_users_on_country_id"
     t.index ["email"], name: "index_users_on_email"
   end
@@ -168,5 +157,4 @@ ActiveRecord::Schema.define(version: 2018_12_01_030628) do
     t.index ["city_id"], name: "index_zones_on_city_id"
     t.index ["name"], name: "index_zones_on_name"
   end
-
 end

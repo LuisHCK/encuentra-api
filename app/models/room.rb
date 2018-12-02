@@ -13,7 +13,10 @@ class Room < ApplicationRecord
   validates_presence_of :title
   validates_presence_of :description
 
-  # States
+  ##########
+  # States #
+  ##########
+  # Publication state
   aasm column: "state" do
     state :draft, initial: true
     state :published
