@@ -18,8 +18,8 @@ class Room < ApplicationRecord
   ##########
   # Publication state
   aasm column: "state" do
-    state :draft, initial: true
-    state :published
+    state :published, initial: true
+    state :draft
     state :rented
 
     event :to_published do
@@ -32,25 +32,6 @@ class Room < ApplicationRecord
 
     event :to_draft do
       transitions from: [:published, :rented], to: :draft
-    end
-  end
-
-  # Promotion state
-  aasm column: "promoted" do
-    state :none, initial: true
-    state :silver
-    state :gold
-
-    event :to_silver do
-      transitions to: :silver
-    end
-
-    event :to_gold do
-      transitions to: :gold
-    end
-
-    event :to_none do
-      transitions to: :none
     end
   end
 

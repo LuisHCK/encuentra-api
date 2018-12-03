@@ -4,8 +4,13 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
-    @rooms = Room.page(params[:page]).per(10)
-    serialize_rooms @rooms
+    if params[:promoted].present?
+      @rooms = Room.where(promoted: ["gold", "silver"]).limit(10)
+      return render json: @rooms
+    else
+      @rooms = Room.where(promoted: "none").page(params[:page]).per(10)
+      return serialize_rooms @rooms
+    end
   end
 
   # GET user rooms => user/:id/rooms
@@ -85,8 +90,8 @@ class RoomsController < ApplicationController
                 :category_id,
                 :address,
                 :currency,
-                :services,
                 :phones,
+                :services,
                 photos: []]
     if params[:usealt] == true || params[:usealt] == "true"
       params.permit(permited)

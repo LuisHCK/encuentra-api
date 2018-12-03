@@ -126,11 +126,11 @@ RSpec.describe RoomsController, type: :controller do
       api_auth request, user
       put :set_state, params: {
                         room_id: room.to_param,
-                        state: "to_published",
+                        state: "to_draft",
                       }
       room.reload
       expect(response).to have_http_status(:ok)
-      expect(room.state).to eq("published")
+      expect(room.state).to eq("draft")
     end
   end
 end
