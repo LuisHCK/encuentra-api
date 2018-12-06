@@ -24,9 +24,8 @@ test:
   database: db/test.sqlite3
 
 production:
-  url: <%= ENV['DATABASE_URL'] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   adapter: postgresql
-  username: <%= ENV['DB_USER'] %>
-  database: <%= ENV['DB_NAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
+  encoding: unicode
+  password: <%= ENV['ENCONTRACUARTO_DATABASE_PASSWORD'] %>
+  database: encontracuarto_production
+  pool: 15
