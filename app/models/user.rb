@@ -9,7 +9,8 @@ class User < ApplicationRecord
   # Relationships
   has_many :rooms
   has_many :meetings
-  belongs_to :country
+  belongs_to :city
+  has_one :country, through: :city
 
   # Now Using activestorage instead CarrierWave
   # mount_uploader :avatar, AvatarUploader
@@ -40,6 +41,10 @@ class User < ApplicationRecord
 
   def assign_default_role
     self.add_role(:publisher)
+  end
+
+  def rooms_count
+    self.rooms.count
   end
 
   # Rails admin config

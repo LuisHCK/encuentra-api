@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_02_012650) do
+ActiveRecord::Schema.define(version: 2018_12_09_051854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,9 +133,9 @@ ActiveRecord::Schema.define(version: 2018_12_02_012650) do
     t.string "gl_uid"
     t.string "tw_uid"
     t.string "avatar"
-    t.integer "country_id"
     t.boolean "is_superuser"
-    t.index ["country_id"], name: "index_users_on_country_id"
+    t.bigint "city_id"
+    t.index ["city_id"], name: "index_users_on_city_id"
     t.index ["email"], name: "index_users_on_email"
   end
 
@@ -157,4 +157,6 @@ ActiveRecord::Schema.define(version: 2018_12_02_012650) do
     t.index ["city_id"], name: "index_zones_on_city_id"
     t.index ["name"], name: "index_zones_on_name"
   end
+
+  add_foreign_key "users", "cities"
 end
