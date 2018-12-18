@@ -19,7 +19,7 @@ class MeetingsController < ApplicationController
     @meeting = current_user.meetings.new(meeting_params)
 
     if Meeting.where(room_id: params[:room_id], user_id: current_user.id).any?
-      @meeting.errors.add(:room_id, "A meeting has already been scheduled for this room")
+      @meeting.errors.add(:message, "A meeting has already been scheduled for this room")
       return render json: @meeting.errors, status: :unprocessable_entity
     end
 
