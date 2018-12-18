@@ -1,6 +1,11 @@
 class CitiesController < ApplicationController
   def index
-    @cities = City.where(country_id: 1)
+    @cities = nil
+    if params[:country_id].present?
+      @cities = City.where(country_id: params[:country_id])
+    else
+      @cities = City.all
+    end
     render json: @cities
   end
 
