@@ -10,19 +10,19 @@ puts "#########################"
 country = Country.new(iso: "NI", name: "Nicaragua", iso3: "NIC", latitude: 12.1328200, longitude: -86.2504000)
 puts "Country Created!" if country.save
 
+city = City.new(name: "Managua", iso: "MNG", country_id: country.id, latitude: 12.1328200, longitude: -86.2504000)
+puts "City Created!" if city.save
+
 user = User.new(username: "luishck",
                 email: "luisjcenteno17@gmail.com",
                 name: "Luis",
                 lastname: "Centeno",
                 password: "ljco1800",
                 password_confirmation: "ljco1800",
-                country_id: country.id)
+                city_id: city.id)
 
 puts "User created!" if user.save
 user.add_role(:admin)
-
-city = City.new(name: "Managua", iso: "MNG", country_id: country.id, latitude: 12.1328200, longitude: -86.2504000)
-puts "City Created!" if city.save
 
 zone = Zone.new(name: "Reparto Shick", city_id: city.id, latitude: 12.1328200, longitude: -86.2504000)
 puts "Zone Created!" if zone.save
