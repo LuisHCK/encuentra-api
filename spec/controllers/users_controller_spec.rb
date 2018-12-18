@@ -2,9 +2,10 @@ require "rails_helper"
 
 RSpec.describe UsersController, type: :controller do
   let(:country) { create(:country) }
+  let(:city) { create(:city, country: country) }
 
   let(:valid_attributes) {
-    FactoryBot.attributes_for(:user, country_id: country.id)
+    FactoryBot.attributes_for(:user, city_id: city.id)
   }
 
   let(:invalid_attributes) {
@@ -14,7 +15,7 @@ RSpec.describe UsersController, type: :controller do
       lastname: nil,
       username: nil,
       email: nil,
-      country_id: country.id,
+      city_id: city.id,
     )
   }
 
@@ -47,6 +48,7 @@ RSpec.describe UsersController, type: :controller do
       it "renders a JSON response with the new user" do
         post :create, params: {user: valid_attributes}
         expect(response).to have_http_status(:created)
+        print(response)
         expect(response.content_type).to eq("application/json")
       end
     end
