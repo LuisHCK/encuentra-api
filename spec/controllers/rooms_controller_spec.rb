@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe RoomsController, type: :controller do
   let(:country) { create(:country) }
 
-  let(:user) { create(:publisher, country: country) }
-
   let(:city) { create(:city, country: country) }
+
+  let(:user) { create(:publisher, city: city) }
 
   let(:zone) { create(:zone, city: city) }
 

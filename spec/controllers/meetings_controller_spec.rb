@@ -5,11 +5,11 @@ RSpec.describe MeetingsController, type: :controller do
 
   let(:publisher) { create(:publisher, country: country) }
 
-  let(:user) { create(:user, country: country) }
-
   let(:category) { create(:category) }
 
   let(:city) { create(:city, country: country) }
+
+  let(:user) { create(:user, city: city) }
 
   let(:zone) { create(:zone, city: city) }
 

@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe ZonesController, type: :controller do
   let(:country) { create(:country) }
-  let(:user) { create(:admin, country: country) }
   let(:city) { create(:city, country: country) }
+  let(:user) { create(:admin, city: city) }
   let(:valid_attributes) { FactoryBot.attributes_for(:zone, city_id: city.id) }
   let(:invalid_attributes) { FactoryBot.attributes_for(:zone, latitude: nil, longitude: nil, city: city) }
 
