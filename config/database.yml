@@ -26,6 +26,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
+  user: encuentracuarto
   password: <%= ENV['ENCONTRACUARTO_DATABASE_PASSWORD'] %>
   database: encontracuarto_production
   pool: 15
