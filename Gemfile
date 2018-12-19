@@ -84,5 +84,3 @@ gem 'kaminari'
 
 # PostgreSQL for database
 gem 'pg'
-
-gem 'therubyracer', platforms: :ruby
