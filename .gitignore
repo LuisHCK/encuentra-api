@@ -80,3 +80,4 @@ pickle-email-*.html
 *.jar
 xerial*.*
 storage/*
+config/deploy_id_rsa
