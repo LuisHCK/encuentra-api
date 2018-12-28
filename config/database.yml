@@ -26,7 +26,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  user: encuentracuarto
+  user: encontracuarto
   password: <%= Rails.application.credentials.ENCONTRACUARTO_DATABASE_PASSWORD %>
   database: encontracuarto_production
   pool: 15

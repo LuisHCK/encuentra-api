@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :meetings
   belongs_to :city
   has_one :country, through: :city
+  has_many :favorites
 
   # Now Using activestorage instead CarrierWave
   # mount_uploader :avatar, AvatarUploader
