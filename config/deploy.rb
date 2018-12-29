@@ -23,3 +23,26 @@ set :linked_dirs, %w{public/uploads}
 
 # set :linked_files, %w{config/database.yml}
 # set :linked_dirs,  %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+
+namespace :deploy do
+  desc "Make sure local git is in sync with remote."
+  task :check_revision do
+    on roles(:app) do
+      unless `git rev-parse HEAD` == `git rev-parse origin/#{fetch(:branch)}`
+        puts "WARNING: HEAD is not the same as origin/#{fetch(:branch)}"
+        puts "Run `git push` to sync changes."
+        exit
+      end
+    end
+  end
+
+  desc "Restart application"
+  task :restart do
+    on roles(:app) do
+      execute "passenger-config restart-app --ignore-app-not-running #{deploy_to}"
+    end
+  end
+
+  after :finishing, :restart
+  before :starting, :check_revision
+end
