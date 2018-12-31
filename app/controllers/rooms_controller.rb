@@ -8,17 +8,18 @@ class RoomsController < ApplicationController
       @rooms = Room.where(promoted: ["1-gold", "2-silver"]).order("promoted").limit(10)
       return render json: @rooms
     elsif params[:search].present?
-      return render json: full_search
+      # Search request
+      paginate_rooms full_search
     else
       @rooms = Room.where(promoted: "3-none").page(params[:page]).per(10)
-      return serialize_rooms @rooms
+      return paginate_rooms @rooms
     end
   end
 
   # GET user rooms => user/:id/rooms
   def user_rooms
     @rooms = Room.where(user_id: params[:user_id]).page(params[:page]).per(10)
-    serialize_rooms @rooms
+    paginate_rooms @rooms
   end
 
   # GET /rooms/1
@@ -110,10 +111,13 @@ class RoomsController < ApplicationController
 
   # Execute full search scope in Room
   def full_search
-    Room.full_search(params[:search]).where(state: "published").order("promoted ASC")
+    Room.full_search(params[:search])
+      .where(state: "published")
+      .order("promoted ASC")
+      .page(params[:page]).per(10)
   end
 
-  def serialize_rooms(rooms)
+  def paginate_rooms(rooms)
     return render json: {
                     rooms: ActiveModelSerializers::SerializableResource.new(
                       rooms
