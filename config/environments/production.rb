@@ -83,8 +83,8 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_controller.asset_host = "https://encontra-cuarto.herokuapp.com"
-  config.default_url_options = {host: "https://encontra-cuarto.herokuapp.com"}
-  config.action_mailer.default_url_options = {:host => "https://encontra-cuarto.herokuapp.com"}
-  Rails.application.routes.default_url_options[:host] = "https://encontra-cuarto.herokuapp.com"
+  config.action_controller.asset_host = "https://api.encontracuarto.com/"
+  config.default_url_options = {host: "https://api.encontracuarto.com/"}
+  config.action_mailer.default_url_options = {:host => "https://api.encontracuarto.com/"}
+  Rails.application.routes.default_url_options[:host] = "https://api.encontracuarto.com/"
 end
