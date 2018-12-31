@@ -85,6 +85,9 @@ gem 'kaminari'
 # PostgreSQL for database
 gem 'pg'
 
+# PostgresSQL search
+gem 'pg_search'
+
 group :development, :production do
   gem 'capistrano'
   gem 'capistrano-bundler', require: false

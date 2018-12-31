@@ -1,5 +1,6 @@
 class Room < ApplicationRecord
   include AASM
+  include PgSearch
   attr_accessor :remove_photos
 
   belongs_to :user
@@ -12,6 +13,21 @@ class Room < ApplicationRecord
   # Fields validation
   validates_presence_of :title
   validates_presence_of :description
+
+  # Search scopes
+  pg_search_scope :full_search, against: [
+                                  :title,
+                                  :description,
+                                ],
+                                associated_against: {
+                                  city: :name,
+                                  zone: :name,
+                                },
+                                order_within_rank: "promoted ASC",
+                                using: [
+                                  :tsearch,
+                                  :trigram,
+                                ]
 
   ##########
   # States #

@@ -38,6 +38,17 @@ RSpec.describe RoomsController, type: :controller do
     end
   end
 
+  describe "GET #index" do
+    it "it returns succes search with only pubished rooms" do
+      room1 = create(:room, title: "Searchable", user: user, zone: zone, category: category)
+      room2 = create(:room, user: user, zone: zone, category: category)
+      room2.to_draft!
+      api_auth(request, user)
+      get :index, params: {search: "Searchable"}
+      expect(response).to be_successful
+    end
+  end
+
   describe "GET #show" do
     it "returns a success response" do
       room = Room.create! valid_attributes

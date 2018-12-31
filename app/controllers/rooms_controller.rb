@@ -5,10 +5,12 @@ class RoomsController < ApplicationController
   # GET /rooms
   def index
     if params[:promoted].present?
-      @rooms = Room.where(promoted: ["gold", "silver"]).limit(10)
+      @rooms = Room.where(promoted: ["1-gold", "2-silver"]).order("promoted").limit(10)
       return render json: @rooms
+    elsif params[:search].present?
+      return render json: full_search
     else
-      @rooms = Room.where(promoted: "none").page(params[:page]).per(10)
+      @rooms = Room.where(promoted: "3-none").page(params[:page]).per(10)
       return serialize_rooms @rooms
     end
   end
@@ -104,6 +106,11 @@ class RoomsController < ApplicationController
   def state_is_valid?
     valid_states = %w(to_published to_rented to_draft)
     valid_states.include? params[:state]
+  end
+
+  # Execute full search scope in Room
+  def full_search
+    Room.full_search(params[:search]).where(state: "published").order("promoted ASC")
   end
 
   def serialize_rooms(rooms)
