@@ -5,20 +5,23 @@ class RoomsController < ApplicationController
   # GET /rooms
   def index
     if params[:promoted].present?
-      @rooms = Room.where(promoted: ["1-gold", "2-silver"]).order("promoted").limit(10)
+      @rooms = Room.where(promoted: ["1-gold", "2-silver"], state: "published")
+        .order("promoted").limit(10)
       return render json: @rooms
     elsif params[:search].present?
       # Search request
       paginate_rooms full_search
     else
-      @rooms = Room.where(promoted: "3-none").page(params[:page]).per(10)
+      @rooms = Room.where(promoted: "3-none", state: "published")
+        .page(params[:page]).per(10)
       return paginate_rooms @rooms
     end
   end
 
   # GET user rooms => user/:id/rooms
   def user_rooms
-    @rooms = Room.where(user_id: params[:user_id]).page(params[:page]).per(10)
+    @rooms = Room.where(user_id: params[:user_id], state: "published")
+      .page(params[:page]).per(10)
     paginate_rooms @rooms
   end
 
@@ -36,6 +39,9 @@ class RoomsController < ApplicationController
   # POST /rooms
   def create
     @room = current_user.rooms.new(room_params)
+    # Parse json strings if it's necesary
+    @room.phones = JSON.parse(@room.phones) if @room.phones.is_a?(String)
+    @room.services = JSON.parse(@room.services) if @room.services.is_a?(String)
 
     if @room.save
       render json: @room, status: :created
@@ -97,6 +103,7 @@ class RoomsController < ApplicationController
                 :services,
                 photos: []]
     if params[:usealt] == true || params[:usealt] == "true"
+      # When use alt don't require an json structured payload
       params.permit(permited)
     else
       params.require(:room).permit(permited)
