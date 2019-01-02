@@ -79,4 +79,9 @@ class User < ApplicationRecord
     self.password = value
     self.password_confirmation = value
   end
+
+  # Set default username when is nil
+  def set_random_username
+    self.username = SecureRandom.uuid
+  end
 end
