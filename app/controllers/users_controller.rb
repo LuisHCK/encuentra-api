@@ -17,9 +17,11 @@ class UsersController < ApplicationController
   # Method to create a new user using the safe params we setup.
   def create
     user = User.new(user_params)
+    # Set default username when username field is nil
+    user.set_random_username if user.username.nil?
+
     if user.save
       # Append JWT token to response headers
-      response.set_header("JWT", client_token(user).token)
       render json: user, status: :created
     else
       render json: {errors: user.errors}, status: :unprocessable_entity
