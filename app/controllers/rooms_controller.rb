@@ -12,7 +12,8 @@ class RoomsController < ApplicationController
       # Search request
       paginate_rooms full_search
     else
-      @rooms = Room.where(promoted: "3-none", state: "published")
+      @rooms = Room.where(promoted: ["3-none", nil], state: "published")
+        .order("created_at DESC")
         .page(params[:page]).per(10)
       return paginate_rooms @rooms
     end
