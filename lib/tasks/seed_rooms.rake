@@ -2,7 +2,7 @@
 
 namespace :db do
   desc "Create 100 rooms with random data"
-  task :seed_rooms do
+  task :seed_rooms => :environment do
     puts "Creating 100 fake rooms..."
 
     photos_path = Rails.root + "photos/"
