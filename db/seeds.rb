@@ -42,22 +42,4 @@ room = Room.new(
   zone: zone,
   user: user,
 )
-puts "Room created!" if room.save
-
-# Create 100 rooms with random data
-puts "Creating 100 fake rooms..."
-100.times do
-  Room.create(
-    title: Faker::Lorem.sentence,
-    description: Faker::Lorem.paragraph(2),
-    price: Faker::Number.leading_zero_number(3),
-    lat: 12.1328200,
-    lng: -86.2504000,
-    address: Faker::Address.full_address,
-    currency: "$",
-    category: category,
-    zone: zone,
-    user: user,
-  )
-end
 puts "End!!!!"
