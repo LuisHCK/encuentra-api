@@ -4,7 +4,7 @@ class FavoritesController < ApplicationController
 
   # GET /favorites
   def index
-    @favorites = current_user.favorites.all
+    @favorites = current_user.favorites.all.page(params[:page]).per(10)
 
     render json: @favorites
   end
@@ -52,5 +52,18 @@ class FavoritesController < ApplicationController
     unless Favorite.find_by(room_id: fav[:room_id], user_id: fav[:user_id])
       return true
     end
+  end
+
+  def paginate_rooms(favorites)
+    return render json: {
+                    rooms: ActiveModelSerializers::SerializableResource.new(
+                      rooms
+                    ).as_json,
+                    pages: {
+                      prev: rooms.prev_page,
+                      next: rooms.next_page,
+                      total: rooms.total_pages,
+                    },
+                  }
   end
 end
