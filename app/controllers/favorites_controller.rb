@@ -16,7 +16,7 @@ class FavoritesController < ApplicationController
 
   # POST /favorites
   def create
-    @favorite = Favorite.new(favorite_params)
+    @favorite = current_user.favorites.new(favorite_params)
 
     if favorite_not_exists? && @favorite.save
       render json: @favorite, status: :created, location: @favorite
@@ -44,12 +44,12 @@ class FavoritesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def favorite_params
-    params.require(:favorite).permit(:user_id, :room_id)
+    params.require(:favorite).permit(:room_id)
   end
 
   def favorite_not_exists?
     fav = params[:favorite]
-    unless Favorite.find_by(room_id: fav[:room_id], user_id: fav[:user_id])
+    unless Favorite.find_by(room_id: fav[:room_id], user_id: current_user.id)
       return true
     end
   end
