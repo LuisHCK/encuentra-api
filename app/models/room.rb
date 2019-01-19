@@ -1,14 +1,13 @@
 class Room < ApplicationRecord
   include AASM
   include PgSearch
-  attr_accessor :remove_photos
-
+  attr_accessor :delete_photos
+  mount_uploaders :photos, PhotoUploader
   belongs_to :user
   belongs_to :zone
   has_many :meetings
   belongs_to :category
   has_one :city, through: :zone
-  has_many_attached :photos
 
   # Fields validation
   validates_presence_of :title
@@ -52,15 +51,21 @@ class Room < ApplicationRecord
   end
 
   # For rails admin
-  after_save do
-    Array(remove_photos).each { |id| photos.find_by_id(id).try(:purge) }
+  after_validation do
+    uploaders = photos.delete_if do |uploader|
+      if Array(delete_photos).include?(uploader.file.identifier)
+        uploader.remove!
+        true
+      end
+    end
+    write_attribute(:photos, uploaders.map { |uploader| uploader.file.identifier })
   end
 
   rails_admin do
     edit do
       include_all_fields
       exclude_fields :photos
-      field :photos, :multiple_active_storage
+      field :photos, :multiple_carrierwave
     end
   end
 end

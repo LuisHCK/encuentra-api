@@ -5,7 +5,7 @@ namespace :db do
   task :seed_rooms => :environment do
     puts "Creating 100 fake rooms..."
 
-    photos_path = Rails.root + "photos/"
+    photos_path = Rails.root + "public/sample_photos/"
     photos = Dir.children(photos_path)
 
     100.times do
@@ -26,12 +26,15 @@ namespace :db do
 
       index = SecureRandom.random_number(photos.size) - 1
 
-      room.photos.attach(
-        io: File.open(photos_path + photos[index]),
-        filename: photos[index],
-      )
+      room.photos = [File.open(photos_path + photos[index])]
 
-      room.save()
+      if room.save()
+        puts "Room #{room.id}- #{room.title} created!"
+      else
+        room.errors.each do |err|
+          puts err
+        end
+      end
     end
   end
 end
