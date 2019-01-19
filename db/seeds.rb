@@ -18,6 +18,7 @@ user = User.new(username: "luishck",
                 name: "Luis",
                 lastname: "Centeno",
                 password: "ljco1800",
+                is_superuser: true,
                 password_confirmation: "ljco1800",
                 city_id: city.id)
 

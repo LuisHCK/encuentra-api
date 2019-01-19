@@ -94,3 +94,5 @@ group :development, :production do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
 end
+
+gem 'carrierwave', '~> 1.0'

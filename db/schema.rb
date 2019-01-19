@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_31_050140) do
+ActiveRecord::Schema.define(version: 2019_01_19_204255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 2018_12_31_050140) do
     t.integer "category_id"
     t.json "services"
     t.json "phones"
+    t.json "photos"
     t.index ["category_id"], name: "index_rooms_on_category_id"
     t.index ["user_id"], name: "index_rooms_on_user_id"
     t.index ["zone_id"], name: "index_rooms_on_zone_id"
