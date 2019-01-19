@@ -4,6 +4,7 @@ class Auth::FacebookController < ApplicationController
 
   require "securerandom"
   require "net/http"
+  require "open-uri"
 
   def create
     render json: auth_token, status: :created
@@ -28,7 +29,13 @@ class Auth::FacebookController < ApplicationController
             password: SecureRandom.base64(10),
           )
           # Set Facebook Profile pic
-          @user.remote_avatar_url = data["picture"]["data"]["url"]
+          avatar_url = data["picture"]["data"]["url"]
+          file = open(avatar_url)
+          @user.avatar.attach(
+            io: file,
+            filename: "#{@user.username}.jpg",
+            content_type: "image/jpg",
+          )
 
           if @user.save
             render json: {jwt: user_token(@user).token}, status: :created
