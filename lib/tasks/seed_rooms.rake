@@ -17,6 +17,7 @@ namespace :db do
         lng: -86.2504000,
         address: Faker::Address.full_address,
         currency: "$",
+        promoted: '3-none',
         category: Category.first,
         zone: Zone.first,
         user: User.find_by(username: "encontracuarto"),

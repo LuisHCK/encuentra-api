@@ -13,7 +13,7 @@ puts "Country Created!" if country.save
 city = City.new(name: "Managua", iso: "MNG", country_id: country.id, latitude: 12.1328200, longitude: -86.2504000)
 puts "City Created!" if city.save
 
-user = User.new(username: "luishck",
+user1 = User.new(username: "luishck",
                 email: "luisjcenteno17@gmail.com",
                 name: "Luis",
                 lastname: "Centeno",
@@ -22,8 +22,19 @@ user = User.new(username: "luishck",
                 password_confirmation: "ljco1800",
                 city_id: city.id)
 
-puts "User created!" if user.save
-user.add_role(:admin)
+puts "Admin created!" if user1.save
+user1.add_role(:admin)
+
+user2 = User.new(username: "encontracuarto",
+  email: "lencontracuarto@gmail.com",
+  name: "Encontracuarto",
+  lastname: "Cuarto",
+  password: "ljco1800",
+  password_confirmation: "ljco1800",
+  city_id: city.id)
+
+puts "User created!" if user2.save
+user2.add_role(:publisher)
 
 zone = Zone.new(name: "Reparto Shick", city_id: city.id, latitude: 12.1328200, longitude: -86.2504000)
 puts "Zone Created!" if zone.save
@@ -41,6 +52,6 @@ room = Room.new(
   currency: "$",
   category: category,
   zone: zone,
-  user: user,
+  user: user1,
 )
 puts "End!!!!"
