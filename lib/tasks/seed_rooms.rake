@@ -8,6 +8,7 @@ namespace :db do
     photos_path = Rails.root + "public/sample_photos/"
     photos = Dir.children(photos_path)
 
+
     100.times do
       room = Room.new(
         title: Faker::Lorem.sentence,
@@ -27,14 +28,12 @@ namespace :db do
 
       index = SecureRandom.random_number(photos.size) - 1
 
-      room.photos = [File.open(photos_path + photos[index])]
+      room.photos = [Pathname.new(photos_path + photos[index]).open]
 
       if room.save()
         puts "Room #{room.id}- #{room.title} created!"
       else
-        room.errors.each do |err|
-          puts err
-        end
+        puts room.errors
       end
     end
   end
