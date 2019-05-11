@@ -15,30 +15,28 @@ class Auth::FacebookController < ApplicationController
       if data = get_facebook_user(auth_params[:access_token])
         if @user = User.find_by(fb_uid: data["id"])
           # Update avatar on Login
-          @user.remote_avatar_url = data["picture"]["data"]["url"]
+          attach_avatar_url(@user, data["picture"]["data"]["url"])
           @user.save
           # Render user Info
-          render json: {jwt: user_token(@user).token}, status: :created
+          serialized_token @user
         else
+          # Set default data
+          defaults = set_defaults data
+
           @user = User.new(
             fb_uid: data["id"],
             name: data["first_name"],
             lastname: data["last_name"],
-            email: data["email"],
-            username: SecureRandom.hex(10),
-            password: SecureRandom.base64(10),
+            email: defaults[:email],
+            username: defaults[:username],
+            password: defaults[:password],
+            password_confirmation: defaults[:password],
           )
           # Set Facebook Profile pic
-          avatar_url = data["picture"]["data"]["url"]
-          file = open(avatar_url)
-          @user.avatar.attach(
-            io: file,
-            filename: "#{@user.username}.jpg",
-            content_type: "image/jpg",
-          )
+          attach_avatar_url(@user, data["picture"]["data"]["url"])
 
           if @user.save
-            render json: {jwt: user_token(@user).token}, status: :created
+            serialized_token @user
           else
             render json: @user.errors, status: :unprocessable_entity
           end
@@ -54,6 +52,41 @@ class Auth::FacebookController < ApplicationController
 
   private
 
+  def serialized_token(user)
+    render json: {
+      jwt: user_token(user),
+      user: UserSerializer.new(user).as_json
+    }, status: :created
+  end
+
+  def attach_avatar_url(user, url)
+    file = open(url)
+    user.avatar.attach(
+      io: file,
+      filename: "#{@user.username}.jpg",
+      content_type: "image/jpg",
+    )
+  end
+
+  def set_defaults(data)
+    username = SecureRandom.base64(8)
+    password = SecureRandom.hex(10)
+    
+    # Set email or default email
+    email = nil
+    if not data['email']
+      email = "#{username}@encontracuarto.com"
+    else
+      email = data['email']
+    end
+
+    return {
+      username: username,
+      password: password,
+      email: email,
+    }
+  end
+
   # Generate a token for new user
   def user_token(user)
     Knock::AuthToken.new payload: {sub: user.id}
@@ -61,7 +94,7 @@ class Auth::FacebookController < ApplicationController
 
   def get_facebook_user(access_token)
     url =
-      "https://graph.facebook.com/v3.1/me?fields=id%2Cname%2Cfirst_name%2Clast_name%2Cemail%2Cpicture.height(300)&access_token=#{access_token}"
+      "https://graph.facebook.com/v3.3/me?fields=id%2Cname%2Cfirst_name%2Clast_name%2Cemail%2Cpicture.height(300)&access_token=#{access_token}"
 
     response = HTTParty.get(url)
 

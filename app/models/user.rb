@@ -7,9 +7,9 @@ class User < ApplicationRecord
   has_secure_password
 
   # Relationships
+  belongs_to :city, optional: true
   has_many :rooms
   has_many :meetings
-  belongs_to :city
   has_one :country, through: :city
   has_many :favorites
 

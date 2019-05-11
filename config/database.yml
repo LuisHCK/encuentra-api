@@ -7,10 +7,12 @@
 default: &default
   adapter: postgresql
   host: localhost
+  encoding: unicode
+  user: encontracuarto
+  password: 1234
 
 development:
-  adapter: postgresql
-  host: localhost
+  <<: *default
   database: encontracuarto_development
 
 # Warning: The database defined as "test" will be erased and

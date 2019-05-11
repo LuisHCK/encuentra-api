@@ -26,7 +26,10 @@ Rails.application.routes.draw do
 
   # Authentication
   post "auth/basic" => "user_token#create"
-  post "auth/facebook_auth", to: "facebook#authenticate"
+
+  namespace :auth do
+    post "/facebook", to: "facebook#authenticate"
+  end
 
   # Countries Actions
   get "/countries" => "countries#index"
