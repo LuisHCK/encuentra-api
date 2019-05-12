@@ -5,7 +5,7 @@ class CountriesController < ApplicationController
   # Render all Countries
   def index
     countries = Country.all
-    render json: countries.as_json
+    render json: countries
   end
 
   def show
