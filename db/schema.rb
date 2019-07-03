@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_11_210926) do
+ActiveRecord::Schema.define(version: 2019_05_21_042102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -49,6 +49,16 @@ ActiveRecord::Schema.define(version: 2019_05_11_210926) do
     t.integer "room_id", null: false
     t.integer "category_id", null: false
     t.index ["room_id", "category_id"], name: "index_categories_rooms_on_room_id_and_category_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "room_id"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_chats_on_room_id"
+    t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
   create_table "cities", force: :cascade do |t|
@@ -95,6 +105,16 @@ ActiveRecord::Schema.define(version: 2019_05_11_210926) do
     t.string "phone"
     t.index ["room_id"], name: "index_meetings_on_room_id"
     t.index ["user_id"], name: "index_meetings_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "chat_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -170,7 +190,11 @@ ActiveRecord::Schema.define(version: 2019_05_11_210926) do
     t.index ["name"], name: "index_zones_on_name"
   end
 
+  add_foreign_key "chats", "rooms"
+  add_foreign_key "chats", "users"
   add_foreign_key "favorites", "rooms"
   add_foreign_key "favorites", "users"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
   add_foreign_key "users", "cities"
 end

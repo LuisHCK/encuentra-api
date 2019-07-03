@@ -4,15 +4,26 @@ class RoomsController < ApplicationController
 
   # GET /rooms
   def index
+    # Get user city
+    city_id = params[:city_id]
+
     if params[:promoted].present?
-      @rooms = Room.where(promoted: ["1-gold", "2-silver"], state: "published")
+      # Create query
+      @rooms = Room
+        .joins(:zone => :city)
+        .where(cities: { id: city_id })
+        .where(promoted: ["1-gold", "2-silver"], state: "published")
         .order("promoted").limit(10)
+
       return render json: @rooms
     elsif params[:search].present?
       # Search request
       paginate_rooms full_search
     else
-      @rooms = Room.where(promoted: ["3-none", nil], state: "published")
+      @rooms = Room
+        .joins(:zone => :city)
+        .where(cities: { id: city_id })
+        .where(promoted: ["3-none", nil], state: "published")
         .order("created_at DESC")
         .page(params[:page]).per(10)
       return paginate_rooms @rooms

@@ -3,9 +3,9 @@ class Room < ApplicationRecord
   include PgSearch
   attr_accessor :delete_photos
   mount_uploaders :photos, PhotoUploader
-  belongs_to :user
-  belongs_to :zone
   has_many :meetings
+  belongs_to :zone
+  belongs_to :user
   belongs_to :category
   has_one :city, through: :zone
 
